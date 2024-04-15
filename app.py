@@ -12,12 +12,17 @@ entrou_vizinhos = None
 gale1 = None
 gale2 = None
 
-list_vizinhos = [0,32,15,19,4,21,2,25,17,34,6,27,22,9,31,14,20,1,33,16,24,5,10,23]
+list_vizinhos = [0,32,15,19,4,21,2,25,17,34,6,27,   22,9,31,14,20,1,33,16,24,5,10,23]
 
-telegram_bot_sendtext('Iniciando')
 
 contador_vitoria = 0
-contador_derrota = 1
+contador_derrota = 0
+
+chat_id = '-1001861393714'
+
+telegram_bot("Iniciou vizinhos",chat_id)
+telegram_bot("Vizinhos\nGreen: {}\nRed: {}".format(contador_vitoria,contador_derrota),chat_id)
+
 
 while True:
     try:
@@ -53,36 +58,41 @@ while True:
                                             
                                             if entrou_vizinhos:
                                                 if int(json_['results'][0]) in list_vizinhos: # Verifica se bateu
-                                                    telegram_bot_sendtext(('Vitória: {}'.format(json_['results'][0]))) # Bateu
+                                                    telegram_bot(('Vitória: {}'.format(json_['results'][0])),chat_id) # Bateu
                                                     gale2 = None
                                                     gale1 = None
                                                     entrou_vizinhos = None
+                                                    contador_vitoria += 1
+                                                    telegram_bot("Vizinhos\nGreen: {}\nRed: {}".format(contador_vitoria,contador_derrota),chat_id)
 
                                                 else: # Se não bater
                                                     if gale1: # verifica se ja está no gale 1
-                                                        telegram_bot_sendtext('Derrota gale 1'.format(json_['results'][0]))
-                                                        telegram_bot_sendtext('Entrar gale 2')
+                                                        telegram_bot('Derrota gale 1'.format(json_['results'][0]),chat_id)
+                                                        telegram_bot('Entrar gale 2',chat_id)
                                                         gale2 = True
                                                         gale1 = None
 
                                                     elif gale2: # verifica se ja está no gale 2
-                                                        telegram_bot_sendtext('Derrota gale 2'.format(json_['results'][0]))
+                                                        telegram_bot('Derrota gale 2'.format(json_['results'][0]),chat_id)
                                                         gale2 = None
                                                         gale1 = None
                                                         entrou_vizinhos = None
+                                                        contador_derrota += 1
+                                                        telegram_bot("Vizinhos\nGreen: {}\nRed: {}".format(contador_vitoria,contador_derrota),chat_id)
+                                                        
                                                     else: # Primeira derrota
                                                         gale1 = True
-                                                        telegram_bot_sendtext('Derrota: {}'.format(json_['results'][0]))
-                                                        telegram_bot_sendtext("Entrar no gale 1")
+                                                        telegram_bot('Derrota: {}'.format(json_['results'][0]),chat_id)
+                                                        telegram_bot("Entrar no gale 1",chat_id)
                                                         
                                             else:
-                                                #telegram_bot_sendtext('Verificando se pode entrar em vizinhos...')
-                                                #telegram_bot_sendtext('resultado atual: {}'.format(int(json_['results'][0])))
-                                                #telegram_bot_sendtext('resultado anterior: {}'.format(int(resultados_anteriores[0])))
+                                                #telegram_bot('Verificando se pode entrar em vizinhos...')
+                                                #telegram_bot('resultado atual: {}'.format(int(json_['results'][0])))
+                                                #telegram_bot('resultado anterior: {}'.format(int(resultados_anteriores[0])))
                                                 
                                                 if int(resultados_anteriores[0]) not in list_vizinhos and int(json_['results'][0]) not in list_vizinhos:
-                                                    telegram_bot_sendtext('Entrar em vizinhos')
-                                                    telegram_bot_sendtext("Resultado atual: {}\nResultado anterior: {}".format(json_['results'][0],resultados_anteriores[0]))
+                                                    telegram_bot('Entrar em vizinhos',chat_id)
+                                                    telegram_bot("Resultado atual: {}\nResultado anterior: {}".format(json_['results'][0],resultados_anteriores[0]),chat_id)
                                                     
                                                     entrou_vizinhos = True
                                                     

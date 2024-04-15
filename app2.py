@@ -19,7 +19,12 @@ valor3 = None
 list_vizinhos = [0,32,15,19,4,21,2,25,17,34,6,27,22,9,31,14,20,1,33,16,24,5,10,23]
 
 contador_vitoria = 0
-contador_derrota = 1
+contador_derrota = 0
+
+chat_id = '-1001957169294'
+
+telegram_bot("Iniciou vizinhos conservador",chat_id)
+telegram_bot("Vizinhos Conservador\nGreen: {}\nRed: {}".format(contador_vitoria,contador_derrota),chat_id)
 
 while True:
     try:
@@ -45,11 +50,9 @@ while True:
 
                             for i, json_ in enumerate(json_transformed):
                                 if json_['id'] == '237':
-                                    print(json_['results'])
 
                                     if int(json_['results'][0]) == valor1 and int(json_['results'][1]) == valor2 and int(json_['results'][2]) == valor3:
-                                        print('ainda na mesma rodada vizinhos conservador')
-                                    
+                                        pass                                    
                                     else:
                                         valor1 = int(json_['results'][0])
                                         valor2 = int(json_['results'][1])
@@ -59,45 +62,54 @@ while True:
 
                                         if entrou_vizinhos:
                                             if ultimo_valor in list_vizinhos:
-                                                print("Ganhou vizinhos conservador")
-                                                entrou_vizinhos = None
-                                            else:
-                                                print('entrar gale 1 vizinhos conservador')
-                                                gale1 = True
-                                                entrou_vizinhos = None
-
-                                        if gale1:
-                                            if ultimo_valor in list_vizinhos:
-                                                print('Ganhou vizinhos conservador')
-                                                gale1=None
+                                                telegram_bot("Ganhou vizinhos conservador",chat_id)
                                                 entrou_vizinhos=None
+                                                contador_vitoria+=1
+
+                                                telegram_bot("Vizinhos Conservador\nGreen: {}\nRed: {}".format(contador_vitoria,contador_derrota),chat_id)
                                             else:
-                                                print('entrar gale 2 vizinhos conservador')
-                                                gale2 = True    
-                                                entrou_vizinhos=None
-                                                gale1=None
-                                        
-                                        if gale2:
-                                            if ultimo_valor in list_vizinhos:
-                                                print('Ganhou vizinhos conservador')
-                                                gale2 = None
-                                                gale1 = None
-                                                entrou_vizinhos = None
-                                            else:
-                                                print('red vizinhos conservador')
-                                                gale2 = None
-                                                gale1 = None
-                                                entrou_vizinhos = None                                                   
 
-                                        print(json_['results'])
+                                                if gale1:
+                                                    if ultimo_valor in list_vizinhos:
+                                                        telegram_bot('Ganhou vizinhos conservador')
+                                                        gale1=None
+                                                        entrou_vizinhos=None
+                                                        contador_vitoria+=1
 
-                                        print('mudou de rodada vizinhos conservador')
+                                                        telegram_bot("Vizinhos Conservador\nGreen: {}\nRed: {}".format(contador_vitoria,contador_derrota),chat_id)
+                                                    else:
+                                                        telegram_bot('entrar gale 2 vizinhos conservador',chat_id)
+                                                        gale2=True    
+                                                        gale1=None
+                                                
+                                                elif gale2:
+                                                    if ultimo_valor in list_vizinhos:
+                                                        telegram_bot('Ganhou vizinhos conservador',chat_id)
+                                                        gale2=None
+                                                        gale1=None
+                                                        entrou_vizinhos=None
+                                                        contador_vitoria+=1
+                                                        
+                                                        telegram_bot("Vizinhos Conservador\nGreen: {}\nRed: {}".format(contador_vitoria,contador_derrota),chat_id)
 
-                                        if valor1 not in list_vizinhos and valor2 not in list_vizinhos and valor3 not in list_vizinhos:
+                                                    else:
+                                                        telegram_bot('Red vizinhos conservador',chat_id)
+                                                        gale2=None
+                                                        gale1=None
+                                                        entrou_vizinhos=None    
+                                                        contador_derrota+=1
+
+                                                        telegram_bot("Vizinhos Conservador\nGreen: {}\nRed: {}".format(contador_vitoria,contador_derrota),chat_id)
+
+                                                else:
+                                                    telegram_bot('entrar gale 1 vizinhos conservador',chat_id)
+                                                    gale1=True
+
+
+                                        elif valor1 not in list_vizinhos and valor2 not in list_vizinhos and valor3 not in list_vizinhos:
                                             
-                                            print('entrar vizinhos conservador')                                             
-                                            entrou_vizinhos  = True
-                                        
+                                            telegram_bot('entrar vizinhos conservador',chat_id)                                             
+                                            entrou_vizinhos=True
                                                 
                             else:
                                 pass
