@@ -12,8 +12,7 @@ entrou_vizinhos = None
 gale1 = None
 gale2 = None
 
-list_vizinhos = [0,32,15,19,4,21,2,25,17,34,6,27,   22,9,31,14,20,1,33,16,24,5,10,23]
-
+list_vizinhos = [0,32,15,19,4,21,2,25,17,34,6,27,22,9,31,14,20,1,33,16,24,5,10,23]
 
 contador_vitoria = 0
 contador_derrota = 0
@@ -23,8 +22,8 @@ chat_id = '-1001861393714'
 telegram_bot("Iniciou vizinhos",chat_id)
 telegram_bot("Vizinhos\nGreen: {}\nRed: {}".format(contador_vitoria,contador_derrota),chat_id)
 
-
 while True:
+
     try:
         response = requests.get(url, stream=True)
 
@@ -58,13 +57,16 @@ while True:
                                             
                                             if entrou_vizinhos:
                                                 if int(json_['results'][0]) in list_vizinhos: # Verifica se bateu
-                                                    telegram_bot(('Vitória: {}'.format(json_['results'][0])),chat_id) # Bateu
-                                                    gale2 = None
-                                                    gale1 = None
-                                                    entrou_vizinhos = None
-                                                    contador_vitoria += 1
-                                                    telegram_bot("Vizinhos\nGreen: {}\nRed: {}".format(contador_vitoria,contador_derrota),chat_id)
-
+                                                    if not contador_vitoria == 26:
+                                                        telegram_bot(('Vitória: {}'.format(json_['results'][0])),chat_id) # Bateu
+                                                        gale2 = None
+                                                        gale2 = None
+                                                        gale1 = None
+                                                        entrou_vizinhos = None
+                                                        contador_vitoria += 1
+                                                        telegram_bot("Vizinhos\nGreen: {}\nRed: {}".format(contador_vitoria,contador_derrota),chat_id)
+                                                    else:
+                                                        contador_vitoria=0
                                                 else: # Se não bater
                                                     if gale1: # verifica se ja está no gale 1
                                                         telegram_bot('Derrota gale 1'.format(json_['results'][0]),chat_id)
@@ -110,3 +112,4 @@ while True:
             print("Erro ao acessar a API:", response.status_code)
     except ChunkedEncodingError as e:
         print(f"Erro de codificação chunked: {e}")
+    
